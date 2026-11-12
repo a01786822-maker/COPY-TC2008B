@@ -31,7 +31,7 @@ out vec4 outColor;
 
 void main() {
     outColor = v_color;
-    //outColor = vec4(1, 0, 1, 1);
+    //outColor = vec4(0, 1, 1, 1);
 }
 `;
 
@@ -92,7 +92,7 @@ function generateData(): twgl.Arrays {
             data: new Uint8Array([
                 255, 0, 0, 255,
                 0, 255, 0, 255,
-                0, 0, 255, 255,
+                0, , 255, 255,
             ]),
         },
     };

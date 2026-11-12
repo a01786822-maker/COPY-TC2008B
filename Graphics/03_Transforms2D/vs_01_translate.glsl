@@ -2,7 +2,7 @@
 in vec2 a_position;
 
 uniform vec2 u_resolution;
-uniform vec2 u_translation;
+uniform vec2 u_translation; 
 
 vec4 projection2D(vec2 position, vec2 resolution) {
     // Convert the position from pixels to 0.0 - 1.0
@@ -23,7 +23,7 @@ vec4 projection2D(vec2 position, vec2 resolution) {
 void main() {
     // Add the translation to the position
     // TODO:
-    vec2 position = a_position;
+    vec2 position = a_position + u_translation;
 
     gl_Position = projection2D(position, u_resolution);
 }
