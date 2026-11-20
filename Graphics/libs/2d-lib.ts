@@ -34,7 +34,6 @@ export class V2 {
         return dest;
     }
 
-    // Subtract two vectors: u - v
     static subtract(u: Vec2, v: Vec2, dest?: Vec2): Vec2 {
         dest = dest || new Float32Array(2);
         dest[X] = u[X] - v[X];
@@ -42,55 +41,16 @@ export class V2 {
         return dest;
     }
 
-    // Multiply a vector by a scalar value
     static scale(u: Vec2, s: number, dest?: Vec2): Vec2 {
         dest = dest || new Float32Array(2);
         dest[X] = u[X] * s;
         dest[Y] = u[Y] * s;
         return dest;
     }
-
 }
 
 // 3x3 matrices used for 2D transformations
 export class M3 {
-    static identity(): Mat3 {
-        return [
-            1, 0, 0,
-            0, 1, 0,
-            0, 0, 1,
-        ];
-    }
-
-    // The matrices are stored by columns (as WebGL expects them), so the
-    // translation goes in the last three elements.
-    static translation(v: Vec2): Mat3 {
-        return [
-            1,    0,    0,
-            0,    1,    0,
-            v[X], v[Y], 1,
-        ];
-    }
-
-    static rotation(angleRadians: number): Mat3 {
-        const c = Math.cos(angleRadians);
-        const s = Math.sin(angleRadians);
-        return [
-             c,  s,  0,
-            -s,  c,  0,
-             0,  0,  1,
-        ];
-    }
-
-    static scale(v: Vec2): Mat3 {
-        return [
-            v[X], 0,    0,
-            0,    v[Y], 0,
-            0,    0,    1,
-        ];
-    }
-
-    // Returns a * b. When applied to a vertex, b is applied first, then a.
     static multiply(a: Mat3, b: Mat3): Mat3 {
         // Get the elements in the matrix
         const a00 = a[0 * 3 + 0];
@@ -112,17 +72,8 @@ export class M3 {
         const b21 = b[2 * 3 + 1];
         const b22 = b[2 * 3 + 2];
 
-        /*
-        // Matrix guide:
-        // Consider the rows and columns are transposed
-        a00 a01 a02            b00 b01 b02
-        a10 a11 a12            b10 b11 b12
-        a20 a21 a22            b20 b21 b22
-        */
-
         // The matrices are oriented transposed, so the multiplication
         // must be adjusted accordingly
-
         return [
             a00 * b00 + a10 * b01 + a20 * b02,
             a01 * b00 + a11 * b01 + a21 * b02,
@@ -136,4 +87,49 @@ export class M3 {
         ];
     }
 
+    static identity(): Mat3 {
+        return [
+            1, 0, 0,
+            0, 1, 0,
+            0, 0, 1,
+        ];
+    }
+
+    static translation(v: Vec2): Mat3 {
+        const tx = v[X];
+        const ty = v[Y];
+        return [
+             1,  0,  0,
+             0,  1,  0,
+            tx, ty,  1,
+        ];
+    }
+
+    static rotation(angleRadians: number): Mat3 {
+        const c = Math.cos(angleRadians);
+        const s = Math.sin(angleRadians);
+        return [
+             c,  s,  0,
+            -s,  c,  0,
+             0,  0,  1,
+        ];
+    }
+
+    static scale(v: Vec2): Mat3 {
+        const sx = v[X];
+        const sy = v[Y];
+        return [
+            sx,  0,  0,
+             0, sy,  0,
+             0,  0,  1,
+        ];
+    }
 }
+
+/*
+// Matrix guide:
+// Consider the rows and columns are transposed
+a00 a01 a02            b00 b01 b02
+a10 a11 a12            b10 b11 b12
+a20 a21 a22            b20 b21 b22
+*/
